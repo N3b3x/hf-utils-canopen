@@ -7,8 +7,8 @@
 
 namespace CanOpen {
 
-FlexCan::Frame BuildNmt(uint8_t nodeId, NmtCommand cmd) noexcept {
-    FlexCan::Frame frame{};
+CanFrame BuildNmt(uint8_t nodeId, NmtCommand cmd) noexcept {
+    CanFrame frame{};
     frame.id = 0x000;
     frame.dlc = 2;
     frame.data[0] = static_cast<uint8_t>(cmd);
@@ -18,9 +18,9 @@ FlexCan::Frame BuildNmt(uint8_t nodeId, NmtCommand cmd) noexcept {
     return frame;
 }
 
-FlexCan::Frame BuildSdoDownload(uint8_t nodeId, uint16_t index, uint8_t subIndex,
-                                uint32_t data, uint8_t size) noexcept {
-    FlexCan::Frame frame{};
+CanFrame BuildSdoDownload(uint8_t nodeId, uint16_t index, uint8_t subIndex,
+                          uint32_t data, uint8_t size) noexcept {
+    CanFrame frame{};
     frame.id = 0x600 + nodeId;
     frame.dlc = 8;
     frame.extended = false;

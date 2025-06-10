@@ -15,9 +15,9 @@ namespace CanOpen {
  * @param subIndex Sub-index.
  * @return Populated CAN frame.
  */
-FlexCan::Frame BuildSdoUpload(uint8_t nodeId, uint16_t index,
-                              uint8_t subIndex) noexcept {
-    FlexCan::Frame frame{};
+CanFrame BuildSdoUpload(uint8_t nodeId, uint16_t index,
+                        uint8_t subIndex) noexcept {
+    CanFrame frame{};
     frame.id = 0x600 + nodeId;
     frame.dlc = 8;
     frame.extended = false;
@@ -42,8 +42,8 @@ FlexCan::Frame BuildSdoUpload(uint8_t nodeId, uint16_t index,
  * @param state Node state encoded in the heartbeat.
  * @return Populated CAN frame.
  */
-FlexCan::Frame BuildHeartbeat(uint8_t nodeId, uint8_t state) noexcept {
-    FlexCan::Frame frame{};
+CanFrame BuildHeartbeat(uint8_t nodeId, uint8_t state) noexcept {
+    CanFrame frame{};
     frame.id = 0x700 + nodeId;
     frame.dlc = 1;
     frame.extended = false;
@@ -59,7 +59,7 @@ FlexCan::Frame BuildHeartbeat(uint8_t nodeId, uint8_t state) noexcept {
  * @param controlWord Control word value.
  * @return Populated CAN frame.
  */
-FlexCan::Frame BuildControlWord(uint8_t nodeId, uint16_t controlWord) noexcept {
+CanFrame BuildControlWord(uint8_t nodeId, uint16_t controlWord) noexcept {
     return BuildSdoDownload(nodeId, 0x6040, 0x00, controlWord, 2);
 }
 
@@ -70,7 +70,7 @@ FlexCan::Frame BuildControlWord(uint8_t nodeId, uint16_t controlWord) noexcept {
  * @param mode Desired operation mode.
  * @return Populated CAN frame.
  */
-FlexCan::Frame BuildModeOfOperation(uint8_t nodeId, OperationMode mode) noexcept {
+CanFrame BuildModeOfOperation(uint8_t nodeId, OperationMode mode) noexcept {
     return BuildSdoDownload(nodeId, 0x6060, 0x00,
                             static_cast<uint8_t>(mode), 1);
 }
@@ -82,7 +82,7 @@ FlexCan::Frame BuildModeOfOperation(uint8_t nodeId, OperationMode mode) noexcept
  * @param velocity Target velocity.
  * @return Populated CAN frame.
  */
-FlexCan::Frame BuildTargetVelocity(uint8_t nodeId, int32_t velocity) noexcept {
+CanFrame BuildTargetVelocity(uint8_t nodeId, int32_t velocity) noexcept {
     return BuildSdoDownload(nodeId, 0x60FF, 0x00,
                             static_cast<uint32_t>(velocity), 4);
 }
@@ -94,9 +94,43 @@ FlexCan::Frame BuildTargetVelocity(uint8_t nodeId, int32_t velocity) noexcept {
  * @param position Target position.
  * @return Populated CAN frame.
  */
-FlexCan::Frame BuildTargetPosition(uint8_t nodeId, int32_t position) noexcept {
+CanFrame BuildTargetPosition(uint8_t nodeId, int32_t position) noexcept {
     return BuildSdoDownload(nodeId, 0x607A, 0x00,
                             static_cast<uint32_t>(position), 4);
+}
+
+CanFrame BuildStatusWordRequest(uint8_t nodeId) noexcept {
+    return BuildSdoUpload(nodeId, 0x6041, 0x00);
+}
+
+CanFrame BuildActualPositionRequest(uint8_t nodeId) noexcept {
+    return BuildSdoUpload(nodeId, 0x6064, 0x00);
+}
+
+CanFrame BuildActualVelocityRequest(uint8_t nodeId) noexcept {
+    return BuildSdoUpload(nodeId, 0x606C, 0x00);
+}
+
+CanFrame BuildTargetTorque(uint8_t nodeId, int16_t torque) noexcept {
+    return BuildSdoDownload(nodeId, 0x6071, 0x00,
+                            static_cast<uint16_t>(torque), 2);
+}
+
+CanFrame BuildTargetAcceleration(uint8_t nodeId, int32_t acceleration) noexcept {
+    return BuildSdoDownload(nodeId, 0x60C5, 0x00,
+                            static_cast<uint32_t>(acceleration), 4);
+}
+
+CanFrame BuildMaxProfileVelocity(uint8_t nodeId, uint32_t velocity) noexcept {
+    return BuildSdoDownload(nodeId, 0x607F, 0x00, velocity, 4);
+}
+
+CanFrame BuildProfileAcceleration(uint8_t nodeId, uint32_t accel) noexcept {
+    return BuildSdoDownload(nodeId, 0x6083, 0x00, accel, 4);
+}
+
+CanFrame BuildProfileDeceleration(uint8_t nodeId, uint32_t decel) noexcept {
+    return BuildSdoDownload(nodeId, 0x6084, 0x00, decel, 4);
 }
 
 } // namespace CanOpen

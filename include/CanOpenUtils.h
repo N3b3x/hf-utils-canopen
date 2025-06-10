@@ -7,7 +7,7 @@
 #define UTILITIES_CANOPEN_CANOPENUTILS_H_
 
 #include <cstdint>
-#include <HAL/internal_interface_drivers/FlexCan.h>
+#include "CanFrame.h"
 
 namespace CanOpen {
 
@@ -28,7 +28,7 @@ enum class NmtCommand : uint8_t {
  * @param cmd Command specifier
  * @return Populated CAN frame
  */
-FlexCan::Frame BuildNmt(uint8_t nodeId, NmtCommand cmd) noexcept;
+CanFrame BuildNmt(uint8_t nodeId, NmtCommand cmd) noexcept;
 
 /**
  * @brief Build an expedited SDO download frame.
@@ -42,8 +42,8 @@ FlexCan::Frame BuildNmt(uint8_t nodeId, NmtCommand cmd) noexcept;
  * @param size Size of the data in bytes (1,2,4)
  * @return Populated CAN frame
  */
-FlexCan::Frame BuildSdoDownload(uint8_t nodeId, uint16_t index, uint8_t subIndex,
-                                uint32_t data, uint8_t size) noexcept;
+CanFrame BuildSdoDownload(uint8_t nodeId, uint16_t index, uint8_t subIndex,
+                          uint32_t data, uint8_t size) noexcept;
 
 } // namespace CanOpen
 
