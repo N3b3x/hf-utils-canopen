@@ -18,7 +18,7 @@
  * structs. Usable from any consumer that can already include the rest
  * of `hf-utils-canopen`.
  *
- * @copyright HardFOC.
+ * @todo Add @copyright line once project copyright wording is finalised.
  */
 
 #ifndef HF_UTILS_CANOPEN_CANOPEN_EXTRAS_H_
